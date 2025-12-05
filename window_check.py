@@ -6,28 +6,24 @@ import psutil
 import subprocess
 from pathlib import Path
 import sys
+import subprocess
 
 
 def get_active_window_class():
-
     try:
-        # Get the window ID of the currently active window
-        window_id = subprocess.check_output(['xdotool', 'getactivewindow'], stderr=subprocess.DEVNULL).strip()
+        output = subprocess.check_output(
+            ['kdotool', 'getactivewindow', 'getwindowclassname'],
+            stderr=subprocess.DEVNULL
+        )
 
-        # Get the window class (WM_CLASS) using xprop
-        wm_class = subprocess.check_output(['xprop', '-id', window_id, 'WM_CLASS'], stderr=subprocess.DEVNULL)
+        print("output:" + output.decode('utf-8').strip())
 
-        # Decode and parse the output to extract the class name
-        wm_class = wm_class.decode('utf-8')
-
-        # Extract the second string (usually the class) after the comma
-        class_name = wm_class.split('=')[1].strip().split(',')[1].strip().strip('"')
-
-        return class_name
+        return output.decode('utf-8').strip()
 
     except (subprocess.CalledProcessError, IndexError, ValueError) as e:
         print(f"[WARN] Failed to get active window class: {e}")
         return None
+
 
 
 def is_obs_running():
@@ -65,6 +61,8 @@ def main():
     obs_check_interval = 15      # 15 seconds
 
     last_obs_check = time.time()
+
+    
 
     # Write initial text to file
     try:
