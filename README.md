@@ -4,9 +4,10 @@ This is a linux python/lua script that automatically starts/pauses recording whe
 
 # Usage
 
+0. Install kdotool.
 1. Install Python, do `pip install psutil` in your virtual environment, and pull this repo.
 2. In obs `Tools >> Scripts >> +`, import `auto_record_window.lua`.
-3. Run `xprop` and click on the window you want to record. Use the second string for Process Name.
+3. Find window class for program you want to record and use that for the Process Name.
 4. Reload the script, check `Enable Script`, and run `window_check.py`.
 
 Now OBS will automatically start recording when the specified window gains focus. When it loses focus, OBS will pause the recording.
@@ -21,6 +22,7 @@ Now OBS will automatically start recording when the specified window gains focus
 (inside file)  
 - `window_check_interval = 0.1` - Checks currently focused window every 0.1ms, and if it's different from last check, write the program window class to file. The python and lua script may not be in sync, so the python script checks frequently to lower the latency. Generally it's a pretty fast operation, but if you are on very slow hardware, you may want to increase the value.
 - `obs_check_interval = 15` - Checks if OBS exists every 15 seconds. Closes script if OBS doesn't exist.
+
 
 
 
